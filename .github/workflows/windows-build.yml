@@ -43,7 +43,7 @@ jobs:
             /m `
             /t:Build `
             /p:Configuration=Release `
-            /p:Platform="x86" `
+            /p:Platform="Any CPU" `
             /p:FrameworkPathOverride="$referencePath" `
             /verbosity:minimal
 
