@@ -26,7 +26,7 @@ jobs:
       - name: Install .NET Framework 4.0 reference assemblies
         shell: powershell
         run: |
-          nuget install Microsoft.NETFramework.ReferenceAssemblies `
+          nuget install Microsoft.NETFramework.ReferenceAssemblies.net40 `
             -Version 1.0.3 `
             -OutputDirectory "$env:GITHUB_WORKSPACE\.build" `
             -NonInteractive
@@ -34,7 +34,7 @@ jobs:
       - name: Build solution
         shell: powershell
         run: |
-          $referencePath = Join-Path $env:GITHUB_WORKSPACE '.build\Microsoft.NETFramework.ReferenceAssemblies.1.0.3\build\.NETFramework\v4.0'
+          $referencePath = Join-Path $env:GITHUB_WORKSPACE '.build\Microsoft.NETFramework.ReferenceAssemblies.net40.1.0.3\build\.NETFramework\v4.0'
           if (-not (Test-Path $referencePath)) {
             throw "Missing .NET Framework 4.0 reference assemblies: $referencePath"
           }
