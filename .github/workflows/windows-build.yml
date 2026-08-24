@@ -50,7 +50,7 @@ jobs:
       - name: Package Windows build
         shell: powershell
         run: |
-          $output = "$env:GITHUB_WORKSPACE\faceboard\faceboard\bin\Release"
+          $output = "$env:GITHUB_WORKSPACE\faceboard\bin\Release"
           if (-not (Test-Path "$output\faceboardpro.exe")) {
             throw "Build output not found: $output\faceboardpro.exe"
           }
