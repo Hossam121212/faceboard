@@ -47,6 +47,14 @@ jobs:
             /p:FrameworkPathOverride="$referencePath" `
             /verbosity:minimal
 
+          msbuild "$env:GITHUB_WORKSPACE\faceboard\faceboardpro.csproj" `
+            /m `
+            /t:Build `
+            /p:Configuration=Release `
+            /p:Platform="x86" `
+            /p:FrameworkPathOverride="$referencePath" `
+            /verbosity:minimal
+
       - name: Package Windows build
         shell: powershell
         run: |
