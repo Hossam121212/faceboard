@@ -1,0 +1,65 @@
+name: Build FaceboardPro on Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Set up NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Install .NET Framework 4.0 reference assemblies
+        shell: powershell
+        run: |
+          nuget install Microsoft.NETFramework.ReferenceAssemblies `
+            -Version 1.0.3 `
+            -OutputDirectory "$env:GITHUB_WORKSPACE\.build" `
+            -NonInteractive
+
+      - name: Build solution
+        shell: powershell
+        run: |
+          $referencePath = Join-Path $env:GITHUB_WORKSPACE '.build\Microsoft.NETFramework.ReferenceAssemblies.1.0.3\build\.NETFramework\v4.0'
+          if (-not (Test-Path $referencePath)) {
+            throw "Missing .NET Framework 4.0 reference assemblies: $referencePath"
+          }
+
+          msbuild "$env:GITHUB_WORKSPACE\faceboard\faceboardpro.sln" `
+            /m `
+            /t:Build `
+            /p:Configuration=Release `
+            /p:Platform="x86" `
+            /p:FrameworkPathOverride="$referencePath" `
+            /verbosity:minimal
+
+      - name: Package Windows build
+        shell: powershell
+        run: |
+          $output = "$env:GITHUB_WORKSPACE\faceboard\faceboard\bin\Release"
+          if (-not (Test-Path "$output\faceboardpro.exe")) {
+            throw "Build output not found: $output\faceboardpro.exe"
+          }
+          Compress-Archive -Path "$output\*" -DestinationPath "$env:GITHUB_WORKSPACE\faceboardpro-windows-x86.zip" -Force
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: faceboardpro-windows-x86
+          path: faceboardpro-windows-x86.zip
+          if-no-files-found: error
+          retention-days: 7
