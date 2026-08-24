@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Accounts">
-      <HintPath>..\Accounts\bin\Debug\Accounts.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\BaseLibFB\bin\Debug\log4net.dll</HintPath>
@@ -51,6 +48,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Accounts\Accounts.csproj">
+      <Project>{10BE8BD6-FB6A-40AC-894C-E5ED32C31660}</Project>
+      <Name>Accounts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BaseLibFB\BaseLibFB.csproj">
       <Project>{B1685393-B5A1-4304-8EEC-0DB35BB5E7AA}</Project>
       <Name>BaseLibFB</Name>
